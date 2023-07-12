@@ -1,8 +1,21 @@
+"""
+AnomalyBERT
+################################################
+
+Reference:
+    Yungi Jeong et al. "AnomalyBERT: Self-Supervised Transformer for Time Series Anomaly Detection using Data Degradation Scheme" in ICLR Workshop, "Machine Learning for Internet of Things(IoT): Datasets, Perception, and Understanding" 2023.
+
+Reference:
+    https://github.com/Jhryu30/AnomalyBERT
+"""
+
 import os, time, json
 import numpy as np
 import torch
 import torch.nn as nn
 import argparse
+
+from tqdm import tqdm
 
 from timm.scheduler.cosine_lr import CosineLRScheduler
 from torch.utils.tensorboard import SummaryWriter
@@ -70,7 +83,13 @@ def main(options):
     
     # Load a checkpoint if exists.
     if options.checkpoint != None:
-        model.load_state_dict(torch.load(options.checkpoint, map_location='cpu'))
+        try:
+            model.load_state_dict(torch.load(options.checkpoint, map_location='cpu'))
+        except:
+            loaded_weight = torch.load(options.checkpoint, map_location='cpu')
+            loaded_weight['linear_embedding.weight'] = model.linear_embedding.weight
+            loaded_weight['linear_embedding.bias'] = model.linear_embedding.bias
+            model.load_state_dict(loaded_weight)
 
     if not os.path.exists(config.LOG_DIR):
         os.mkdir(config.LOG_DIR)
@@ -183,7 +202,7 @@ def main(options):
 
     
     # Start training.
-    for i in range(options.initial_iter, max_iters):
+    for i in tqdm(range(options.initial_iter, max_iters)):
         first_index = np.random.choice(valid_index_list, size=n_batch)
         x = []
         for j in first_index:
@@ -212,12 +231,15 @@ def main(options):
         # Replacing types and dimensions
         replacing_type = np.random.uniform(0., 1., size=(n_batch,))
         replacing_dim_numerical = np.random.uniform(0., 1., size=(n_batch, num_numerical))
-        replacing_dim_categorical = np.random.uniform(0., 1., size=(n_batch, num_categorical))
+        replacing_dim_categorical = np.random.uniform(0., 1., size=(n_batch, num_categorical)) 
+        
         
         replacing_dim_numerical = replacing_dim_numerical\
                                   - np.maximum(replacing_dim_numerical.min(axis=1, keepdims=True), 0.3) <= 0.001
-        replacing_dim_categorical = replacing_dim_categorical\
-                                    - np.maximum(replacing_dim_categorical.min(axis=1, keepdims=True), 0.3) <= 0.001
+        
+        
+        # replacing_dim_categorical = replacing_dim_categorical\
+        #                             - np.maximum(replacing_dim_categorical.min(axis=1, keepdims=True), 0.3) <= 0.001 
         
 #         replacing_dim = np.empty(n_batch, d_data, dtype=bool)
 #         replacing_dim[numerical_column] = replacing_dim_numerical
@@ -325,7 +347,7 @@ def main(options):
             
             else:
                 x_rep.append(None)
-            
+                
         # Process data.
         z = torch.stack(x)
         y = model(z)
@@ -426,7 +448,7 @@ if __name__ == "__main__":
     parser.add_argument("--checkpoint", default=None, type=str, help='load checkpoint file')
     parser.add_argument("--initial_iter", default=0, type=int, help='initial iteration for training')
     
-    parser.add_argument("--dataset", default='SMAP', type=str, help='SMAP/MSL/SMD/SWaT/WADI')
+    parser.add_argument("--dataset", default='ESS_sionyu', type=str, help='ESS_sionyu/ESS_panli_bank1/ESS_panli_bank2')
     parser.add_argument("--replacing_data", default=None, type=str, help='external data for soft replacement; None(default)/SMAP/MSL/SMD/SWaT/WADI')
     
     parser.add_argument("--batch_size", default=16, type=int)
