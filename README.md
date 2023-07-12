@@ -1,6 +1,6 @@
 # AnomalyBERT: Transformer-based Anomaly Detector
 
-This is the code for **Self-supervised Transformer for Time Series Anomaly Detection using Data Degradation Scheme**.
+This is the code for **Self-supervised Transformer for Time Series Anomaly Detection using Data Degradation Scheme** for *<U>Development of intelligent SW framework for safe autonomous operation and performance evaluation of large-scale distributed energy storage infrastructure</U>*.
 
 ## Installation
 
@@ -28,34 +28,29 @@ DATASET_DIR = 'path/to/dataset/processed/'
 ## Training
 
 We provide the training code for our model.
-For example, to train a model of 6-layer Transformer body on SMAP dataset, run:
+For example, to train a model of 6-layer Transformer body on ESS_sionyu dataset, run:
 
 ```
-python3 train.py --dataset=SMAP --n_layer=6
+python3 train.py --dataset=ESS_sionyu --n_layer=6
 ```
 
-To train a model on MSL dataset with patch size of 2 and customized outlier synthesis probability, run:
+To train a model on ESS_panli_bank1 dataset with patch size of 2 and customized outlier synthesis probability, run:
 
 ```
-python3 train.py --dataset=MSL --patch_size=2 --soft_replacing=0.5 --uniform_replacing=0.1 --peak_noising=0.1 \
+python3 train.py --dataset=ESS_panli_bank1 --patch_size=2 --soft_replacing=0.5 --uniform_replacing=0.1 --peak_noising=0.1 \
 --length_adjusting=0.1
 ```
 
-You can use the default option for training each dataset, as we did in our paper.
-
-```
-python3 train.py --default_options=SMAP # or any dataset name in MSL/SMD/SWaT/WADI and subset of SMD; SMD0 ~ SMD27
-```
 
 If you want to customize the model and training settings, please check the options in `train.py`.
 
 ## Anomaly score estimation and metric computation
 
 To estimate anomaly scores of test data with the trained model, run the `estimate.py` code.
-For example, you can estimate anomaly scores of SMAP test set divided by channel with window sliding of 16.
+For example, you can estimate anomaly scores of ESS_sionyu test set divided by channel with window sliding of 16.
 
 ```
-python3 estimate.py --dataset=SMAP --model=logs/YYMMDDhhmmss_SMAP/model.pt --state_dict=logs/YYMMDDhhmmss_SMAP/state_dict.pt \
+python3 estimate.py --dataset=ESS_sionyu --model=logs/YYMMDDhhmmss_ESS_sionyu/model.pt --state_dict=logs/YYMMDDhhmmss_ESS_sionyu/state_dict.pt \
 --window_sliding=16
 ```
 
@@ -63,7 +58,7 @@ Now you will obtain results (npy) file that contains the estimated anomaly score
 With the results file, you can compute F1-score with and without the point adjustment by running:
 
 ```
-python3 compute_metrics.py --dataset=SMAP --result=logs/YYMMDDhhmmss_SMAP/state_dict_results.npy
+python3 compute_metrics.py --dataset=ESS_sionyu --result=logs/YYMMDDhhmmss_ESS_sionyu/state_dict_results.npy
 ```
 
 If you want to customize the estimation or computation settings, please check the options in `estimate.py` and `compute_metrics.py`.
