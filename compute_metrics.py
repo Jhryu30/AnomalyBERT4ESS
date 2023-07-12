@@ -277,7 +277,7 @@ def compute(options):
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", default='SMAP', type=str, help='SMAP/MSL/SMD/SWaT/WADI')
+    parser.add_argument("--dataset", default='ESS_sionyu', type=str, help='ESS_sionyu/ESS_panli_bank1/ESS_panli_bank2')
     parser.add_argument("--result", required=True, type=str, help='result file (.npy) obtained from estimate.py')
     parser.add_argument("--outfile", default=None, type=str, help='output file name (.txt) to save computation logs')
     

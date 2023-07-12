@@ -128,7 +128,7 @@ def main(options):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--gpu_id", default=0, type=int)
-    parser.add_argument("--dataset", default='SMAP', type=str, help='SMAP/MSL/SMD/SWaT/WADI')
+    parser.add_argument("--dataset", default='ESS_sionyu', type=str, help='ESS_sionyu/ESS_panli_bank1/ESS_panli_bank2')
     
     parser.add_argument("--model", required=True, type=str, help='model file (.pt) to estimate')
     parser.add_argument("--state_dict", required=True, type=str, help='state dict file (.pt) to estimate')
