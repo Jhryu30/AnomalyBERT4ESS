@@ -28,10 +28,10 @@ DATASET_DIR = 'path/to/dataset/processed/'
 ## Training
 
 We provide the training code for our model.
-For example, to train a model of 6-layer Transformer body on ESS_sionyu dataset, run:
+(recommended) For example, to train a model of 6-layer Transformer body on ESS_sionyu dataset, run:
 
 ```
-python3 train.py --dataset=ESS_sionyu --n_layer=6
+python3 train.py --dataset=ESS_sionyu --patch_size=90 --window_sliding=512
 ```
 
 To train a model on ESS_panli_bank1 dataset with patch size of 2 and customized outlier synthesis probability, run:
