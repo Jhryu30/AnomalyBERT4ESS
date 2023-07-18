@@ -1,6 +1,7 @@
 # AnomalyBERT: Transformer-based Anomaly Detector
 
-This is the code for **Self-supervised Transformer for Time Series Anomaly Detection using Data Degradation Scheme** for *<U>Development of intelligent SW framework for safe autonomous operation and performance evaluation of large-scale distributed energy storage infrastructure</U>*.
+This is the code for **Self-supervised Transformer for Time Series Anomaly Detection using Data Degradation Scheme**.
+Especially, code for **AnomalyBERT4ESS** is a code for *<U>Development of intelligent SW framework for safe autonomous operation and performance evaluation of large-scale distributed energy storage infrastructure</U>*.
 
 ## Installation
 
