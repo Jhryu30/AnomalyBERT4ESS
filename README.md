@@ -9,7 +9,7 @@ Please clone our repository at `path/to/repository/` and install the packages in
 Before installing the packages, we recommend installing Python 3.8 and Pytorch 1.9 with CUDA.
 
 ```
-git clone https://github.com/Jhryu30/AnomalyBERT.git path/to/repository/
+git clone https://github.com/Jhryu30/AnomalyBERT4ESS.git path/to/repository/
 
 conda create --name your_env_name python=3.8
 conda activate your_env_name
